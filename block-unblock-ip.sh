@@ -5,8 +5,12 @@ LOG_PATH="/tmp/LinuxFirewall-script.log"
 AR_LOG="/var/ossec/active-response/active-responses.log"
 HOSTNAME=$(hostname)
 RUN_START=$(date +%s)
+
+# Map Velociraptor arguments
 [ -n "$ARG1" ] && [ -z "$TARGET_IP" ] && TARGET_IP="$ARG1"
 [ -n "$ARG2" ] && [ "$ACTION" = "block" ] && ACTION="$ARG2"
+
+# Validate IP
 if [[ -z "$TARGET_IP" ]]; then
   echo "ERROR: TARGET_IP is required (no interactive input allowed)" >&2
   exit 1
@@ -15,6 +19,7 @@ if ! [[ "$TARGET_IP" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
   echo "ERROR: Invalid IPv4 address format: $TARGET_IP" >&2
   exit 1
 fi
+
 write_log() {
   local level="$1"
   local message="$2"
@@ -22,6 +27,7 @@ write_log() {
   ts=$(date +"%Y-%m-%d %H:%M:%S.%3N")
   echo "[$ts][$level] $message" | tee -a "$LOG_PATH"
 }
+
 rotate_log() {
   local max_kb=100
   local keep=5
@@ -35,8 +41,10 @@ rotate_log() {
     fi
   fi
 }
+
 rotate_log
 write_log "INFO" "=== SCRIPT START : Firewall $ACTION for IP $TARGET_IP ==="
+
 STATUS="unknown"
 if [[ "$ACTION" == "block" ]]; then
   if iptables -C INPUT -s "$TARGET_IP" -j DROP 2>/dev/null; then
@@ -55,6 +63,7 @@ else
     STATUS="not_found"
   fi
 fi
+
 TS=$(date -Iseconds)
 JSON=$(jq -n \
   --arg timestamp "$TS" \
@@ -63,8 +72,10 @@ JSON=$(jq -n \
   --arg target_ip "$TARGET_IP" \
   --arg status "$STATUS" \
   '{timestamp:$timestamp,host:$host,action:$action,target_ip:$target_ip,status:$status}')
+
 echo "$JSON" >> "$AR_LOG"
 write_log "INFO" "JSON appended to $AR_LOG"
+
 RUN_END=$(date +%s)
 DURATION=$((RUN_END - RUN_START))
 write_log "INFO" "=== SCRIPT END : duration ${DURATION}s ==="
