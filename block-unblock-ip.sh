@@ -71,7 +71,8 @@ JSON=$(jq -n \
   --arg action "firewall_$ACTION" \
   --arg target_ip "$TARGET_IP" \
   --arg status "$STATUS" \
-  '{timestamp:$timestamp,host:$host,action:$action,target_ip:$target_ip,status:$status}')
+  --arg copilot_action "true" \
+  '{timestamp:$timestamp,host:$host,action:$action,target_ip:$target_ip,status:$status, copilot_action:$copilot_action}')
 
 echo "$JSON" >> "$AR_LOG"
 write_log "INFO" "JSON appended to $AR_LOG"
@@ -80,3 +81,4 @@ RUN_END=$(date +%s)
 DURATION=$((RUN_END - RUN_START))
 write_log "INFO" "=== SCRIPT END : duration ${DURATION}s ==="
 exit 0
+
