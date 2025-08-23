@@ -1,47 +1,41 @@
 {
-  "copilot_action_name": "WINDOWS-LIST-WEAK-SECRETS-COPILOT-ACTION",
-  "description": "Recursively scans files for potential plain-text secrets (passwords, API keys, tokens, etc.) within specified directories. Supports configurable root directory, optional exclusion of system folders, and maximum file size limit. Matches against common keywords, calculates SHA256 for flagged files, and outputs NDJSON containing a full summary with flagged files. Writes atomically to the Active Response log with .new fallback.",
-  "technology": "Windows",
-  "icon": "windows",
+  "copilot_action_name": "LINUX-BLOCK-UNBLOCK-IP-COPILOT-ACTION",
+  "description": "Blocks or unblocks a specified IPv4 address using iptables. Validates IP format, supports both blocking and unblocking modes, logs actions, and outputs NDJSON including the target IP, action taken, and resulting status. Writes atomically to the Active Response log with .new fallback if locked.",
+  "technology": "Linux",
+  "icon": "linux",
   "script_parameters": [
     {
-      "name": "LogPath",
+      "name": "TARGET_IP",
+      "type": "string",
+      "required": true,
+      "description": "IPv4 address to block or unblock (e.g., 203.0.113.45).",
+      "default": null
+    },
+    {
+      "name": "ACTION",
       "type": "string",
       "required": false,
-      "description": "Path to the rotating human-readable script log.",
-      "default": "%TEMP%/List-WeakSecrets.log"
+      "description": "Operation mode: 'block' (default) or 'unblock'.",
+      "default": "block",
+      "enum": ["block", "unblock"]
     },
     {
       "name": "ARLog",
       "type": "string",
       "required": false,
-      "description": "Active Response NDJSON output path (atomic overwrite; falls back to .new if locked).",
-      "default": "C:\\Program Files (x86)\\ossec-agent\\active-response\\active-responses.log"
+      "description": "Active Response NDJSON output path. JSON entries are appended to this file.",
+      "default": "/var/ossec/active-response/active-responses.log"
     },
     {
-      "name": "RootDir",
+      "name": "LogPath",
       "type": "string",
       "required": false,
-      "description": "Root directory to scan for files containing potential secrets.",
-      "default": "C:\\"
-    },
-    {
-      "name": "ExcludeSystem",
-      "type": "boolean",
-      "required": false,
-      "description": "Exclude system directories from scanning (Windows, Program Files, ProgramData).",
-      "default": false
-    },
-    {
-      "name": "MaxSizeMB",
-      "type": "integer",
-      "required": false,
-      "description": "Maximum file size (in MB) to scan.",
-      "default": 50
+      "description": "Path to the rotating human-readable script log.",
+      "default": "/tmp/LinuxFirewall-script.log"
     }
   ],
-  "repo_url": "https://github.com/socfortress/WINDOWS-LIST-WEAK-SECRETS-ACTIVERESPONSE",
-  "script_name": "List-WeakSecrets.ps1",
+  "repo_url": "https://github.com/socfortress/LINUX-BLOCK-UNBLOCK-IP-COPILOT-ACTION",
+  "script_name": "block-unblock-ip.sh",
   "version": "1.0.0",
-  "last_updated": "2025-08-22T00:00:00Z"
+  "last_updated": "2025-08-23T00:00:00Z"
 }
