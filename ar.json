@@ -9,7 +9,8 @@
       "type": "string",
       "required": true,
       "description": "IPv4 address to block or unblock (e.g., 203.0.113.45).",
-      "default": null
+      "default": null,
+      "arg_position" : "1"
     },
     {
       "name": "ACTION",
@@ -17,7 +18,8 @@
       "required": false,
       "description": "Operation mode: 'block' (default) or 'unblock'.",
       "default": "block",
-      "enum": ["block", "unblock"]
+      "enum": ["block", "unblock"],
+      "arg_position" : "2"
     },
     {
       "name": "ARLog",
