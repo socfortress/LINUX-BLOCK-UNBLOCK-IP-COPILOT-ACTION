@@ -18,25 +18,10 @@
       "required": false,
       "description": "Operation mode: 'block' (default) or 'unblock'.",
       "default": "block",
-      "enum": ["block", "unblock"],
       "arg_position" : "2"
     },
-    {
-      "name": "ARLog",
-      "type": "string",
-      "required": false,
-      "description": "Active Response NDJSON output path. JSON entries are appended to this file.",
-      "default": "/var/ossec/active-response/active-responses.log"
-    },
-    {
-      "name": "LogPath",
-      "type": "string",
-      "required": false,
-      "description": "Path to the rotating human-readable script log.",
-      "default": "/tmp/LinuxFirewall-script.log"
-    }
   ],
-  "repo_url": "https://raw.githubusercontent.com/socfortress/LINUX-BLOCK-UNBLOCK-IP-COPILOT-ACTION/refs/heads/main/",
+  "repo_url": "https://raw.githubusercontent.com/socfortress/LINUX-BLOCK-UNBLOCK-IP-COPILOT-ACTION/refs/heads/main/block-unblock-ip.sh",
   "script_name": "block-unblock-ip.sh",
   "version": "1.0.0",
   "last_updated": "2025-08-23T00:00:00Z"
